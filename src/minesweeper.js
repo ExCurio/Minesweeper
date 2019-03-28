@@ -1,19 +1,48 @@
-const printBoard = board => {
-  console.log('Current Board:');
-  console.log(board[0].join(' | '));
-  console.log(board[1].join(' | '));
-  console.log(board[2].join(' | '));
+// Dynamically create the Player's Board given two number parameters
+const generatePlayerBoard = (numberOfRows, numberOfColumns) => {
+  let board = [];
+  for (let i = 0; i < numberOfRows; i++) {
+    let row = [];
+    for (let j = 0; j < numberOfColumns; j++) {
+      row.push(' ');
+    }
+    board.push(row);
+  }
+  return board;
 };
 
-const board = [
-  [' ', ' ', ' '],
-  [' ', ' ', ' '],
-  [' ', ' ', ' ']
-];
+// Dynamically create the Bomb Board, randomly placing bombs on the board
+const generateBombBoard = (numberOfRows, numberOfColumns, numberOfBombs) => {
+  let board = [];
+  for (let i = 0; i < numberOfRows; i++) {
+    let row = [];
+    for (let j = 0; j < numberOfColumns; j++) {
+      row.push(null);
+    }
+    board.push(row);
+  }
+  let numberOfBombsPlaced = 0;
+  while (numberOfBombsPlaced < numberOfBombs) {
+    let randomRowIndex = Math.floor(Math.random() * numberOfRows);
+    let randomColumnIndex = Math.floor(Math.random() * numberOfColumns);
+    board[randomRowIndex][randomColumnIndex] = 'B';
+    numberOfBombsPlaced++;
+    // The while loop has the potential to place bombs on already existing bombs
+  }
+  return board;
+};
 
-printBoard(board);
+// Prints to console the Game Board with Board Formatting
+const printBoard = board => {
+  console.log(board.map(row => row.join(' | ')).join('\n'));
+};
 
-board[0][1] = '1';
-board[2][2] = 'B';
+// Test Functions
+const playerBoard = generatePlayerBoard(3, 4);
+const bombBoard = generateBombBoard(3, 4, 5);
 
-printBoard(board);
+console.log('Player Board: ');
+printBoard(playerBoard);
+
+console.log('Bomb Board: ');
+printBoard(bombBoard);
